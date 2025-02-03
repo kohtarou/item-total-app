@@ -132,7 +132,7 @@ const Page: React.FC = () => {
     // ファイルのハッシュ値を計算
     const fileHash = await calculateMD5Hash(file); // 追加
     // バケット内のパスを指定
-    const path = `private/${fileHash}`; // 変更
+    const path = `public/${fileHash}`; // 変更
     // ファイルが存在する場合は上書きするための設定 → upsert: true
     const { data, error } = await supabase.storage
       .from("cover_image")
