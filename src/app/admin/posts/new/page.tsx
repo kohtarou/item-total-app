@@ -8,6 +8,7 @@ import { useAuth } from "@/app/_hooks/useAuth";
 import { supabase } from "@/utils/supabase";
 import CryptoJS from "crypto-js"; // 追加
 import Image from "next/image"; // 追加
+import { start } from "repl";
 
 // カテゴリをフェッチしたときのレスポンスのデータ型
 type CategoryApiResponse = {
@@ -38,6 +39,9 @@ const Page: React.FC = () => {
   const [fetchErrorMsg, setFetchErrorMsg] = useState<string | null>(null);
 
   const [newTitle, setNewTitle] = useState("");
+  const [newStartday, setNewStartday] = useState("");
+  const [newFinishday, setNewFinishday] = useState("");
+  const [newItemcounter, setNewItemcounter] = useState("");
   const [newContent, setNewContent] = useState("");
   const [coverImageKey, setCoverImageKey] = useState<string | undefined>(); // 変更
   const [coverImageUrl, setCoverImageUrl] = useState<string | undefined>(); // 追加
@@ -164,6 +168,9 @@ const Page: React.FC = () => {
     try {
       const requestBody = {
         title: newTitle,
+        startday: newStartday,
+        finishday: newFinishday,
+        itemcounter: newItemcounter,
         content: newContent,
         coverImageKey, // 変更
         categoryIds: checkableCategories

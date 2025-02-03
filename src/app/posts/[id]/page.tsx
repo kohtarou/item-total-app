@@ -1,4 +1,3 @@
-/*
 "use client";
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
@@ -117,4 +116,3 @@ const Page: React.FC = () => {
 };
 
 export default Page;
-*/

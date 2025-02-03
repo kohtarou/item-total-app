@@ -28,6 +28,9 @@ type RawApiCategoryResponse = {
 type PostApiResponse = {
   id: string;
   title: string;
+  startday: string;
+  finishday: string;
+  itemcounter: string;
   content: string;
   coverImageKey: string;
   createdAt: string;
@@ -61,6 +64,9 @@ const Page: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [newTitle, setNewTitle] = useState("");
+  const [newStartday, setNewStartday] = useState("");
+  const [newFinishday, setNewFinishday] = useState("");
+  const [newItemcounter, setNewItemcounter] = useState("");
   const [newContent, setNewContent] = useState("");
   const [newCoverImageKey, setNewCoverImageKey] = useState<
     string | undefined
@@ -154,6 +160,7 @@ const Page: React.FC = () => {
 
     // 投稿記事のタイトル、本文、カバーイメージURLを更新
     setNewTitle(rawApiPostResponse.title);
+
     setNewContent(rawApiPostResponse.content);
     setNewCoverImageKey(rawApiPostResponse.coverImageKey);
 
@@ -243,6 +250,9 @@ const Page: React.FC = () => {
     try {
       const requestBody = {
         title: newTitle,
+        startday: newStartday,
+        finishday: newFinishday,
+        itemcounter: newItemcounter,
         content: newContent,
         coverImageKey: newCoverImageKey,
         categoryIds: checkableCategories

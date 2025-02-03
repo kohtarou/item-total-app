@@ -1,4 +1,3 @@
-/*
 "use client";
 import { useState, useEffect } from "react";
 import type { Post } from "@/app/_types/Post";
@@ -90,4 +89,3 @@ const Page: React.FC = () => {
 };
 
 export default Page;
-*/
