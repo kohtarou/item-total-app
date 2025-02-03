@@ -351,7 +351,7 @@ const Page: React.FC = () => {
 
         <div className="space-y-1">
           <label htmlFor="content" className="block font-bold">
-            本文
+            内容
           </label>
           <textarea
             id="content"
@@ -359,14 +359,14 @@ const Page: React.FC = () => {
             className="h-48 w-full rounded-md border-2 px-2 py-1"
             value={newContent}
             onChange={updateNewContent}
-            placeholder="本文を記入してください"
+            placeholder="内容を記入してください"
             required
           />
         </div>
 
         <div className="space-y-1">
           <label htmlFor="coverImage" className="block font-bold">
-            カバーイメージ
+            画像
           </label>
           <input
             id="coverImage"
