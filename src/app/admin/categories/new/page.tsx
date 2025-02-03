@@ -6,7 +6,6 @@ import { twMerge } from "tailwind-merge";
 import { Category } from "@/app/_types/Category";
 import { faTriangleExclamation } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
-import { useAuth } from "@/app/_hooks/useAuth";
 import { useRouter } from "next/navigation";
 
 // カテゴリをフェッチしたときのレスポンスのデータ型
@@ -24,7 +23,6 @@ const Page: React.FC = () => {
   const [fetchErrorMsg, setFetchErrorMsg] = useState<string | null>(null);
   const [newCategoryName, setNewCategoryName] = useState("");
   const [newCategoryNameError, setNewCategoryNameError] = useState("");
-  const { token } = useAuth(); // トークンの取得
   const router = useRouter();
 
   // カテゴリ配列 (State)。取得中と取得失敗時は null、既存カテゴリが0個なら []
@@ -95,11 +93,6 @@ const Page: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!token) {
-      window.alert("予期せぬ動作：トークンが取得できません。");
-      return;
-    }
-
     setIsSubmitting(true);
 
     try {
@@ -113,7 +106,6 @@ const Page: React.FC = () => {
         cache: "no-store",
         headers: {
           "Content-Type": "application/json",
-          Authorization: token, // ◀ 追加
         },
         body: JSON.stringify(requestBody),
       });

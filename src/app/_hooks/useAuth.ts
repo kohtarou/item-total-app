@@ -1,3 +1,4 @@
+/*
 import { useState, useEffect } from "react";
 import { Session } from "@supabase/supabase-js";
 import { supabase } from "@/utils/supabase";
@@ -40,3 +41,4 @@ export const useAuth = () => {
 
   return { isLoading, session, token };
 };
+*/

@@ -1,3 +1,4 @@
+/*
 // src/app/_hooks/useRouteGuard.ts
 import { useAuth } from "@/app/_hooks/useAuth";
 import { useRouter } from "next/navigation";
@@ -20,3 +21,4 @@ export const useRouteGuard = () => {
 
   return { isAuthenticated: session !== null };
 };
+*/

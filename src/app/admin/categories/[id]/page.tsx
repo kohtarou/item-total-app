@@ -6,7 +6,6 @@ import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { twMerge } from "tailwind-merge";
 import { Category } from "@/app/_types/Category";
 import { faTriangleExclamation } from "@fortawesome/free-solid-svg-icons";
-import { useAuth } from "@/app/_hooks/useAuth";
 import Link from "next/link";
 
 // カテゴリをフェッチしたときのレスポンスのデータ型
@@ -35,7 +34,6 @@ const Page: React.FC = () => {
   const [categories, setCategories] = useState<Category[] | null>(null);
 
   const [categoryName, setCategoryName] = useState("");
-  const { token } = useAuth(); // トークンの取得
 
   // ウェブAPI (/api/categories) からカテゴリの一覧をフェッチする関数の定義
   const fetchCategories = async () => {
@@ -135,11 +133,6 @@ const Page: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!token) {
-      window.alert("予期せぬ動作：トークンが取得できません。");
-      return;
-    }
-
     setIsSubmitting(true);
 
     try {
@@ -153,7 +146,6 @@ const Page: React.FC = () => {
         cache: "no-store",
         headers: {
           "Content-Type": "application/json",
-          Authorization: token, // ◀ 追加
         },
         body: JSON.stringify(requestBody),
       });
@@ -183,20 +175,12 @@ const Page: React.FC = () => {
       return;
     }
 
-    if (!token) {
-      window.alert("予期せぬ動作：トークンが取得できません。");
-      return;
-    }
-
     setIsSubmitting(true);
     try {
       const requestUrl = `/api/admin/categories/${id}`;
       const res = await fetch(requestUrl, {
         method: "DELETE",
         cache: "no-store",
-        headers: {
-          Authorization: token, // ◀ 追加
-        },
       });
 
       if (!res.ok) {
