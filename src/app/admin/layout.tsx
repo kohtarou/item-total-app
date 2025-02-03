@@ -1,4 +1,3 @@
-/*
 "use client";
 
 import React from "react";
@@ -32,4 +31,3 @@ const AdminLayout = ({ children }: Props) => {
 };
 
 export default AdminLayout;
-*/

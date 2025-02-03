@@ -1,8 +1,11 @@
 "use client";
+import { PrismaClient } from "@prisma/client";
 import { twMerge } from "tailwind-merge";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFish } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
+
+const prisma = new PrismaClient();
 
 const Header: React.FC = () => {
   return (

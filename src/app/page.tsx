@@ -34,6 +34,9 @@ const Page: React.FC = () => {
               return {
                 id: rawPost.id,
                 title: rawPost.title,
+                startday: rawPost.startday,
+                finishday: rawPost.finishday,
+                itemcounter: rawPost.itemcounter,
                 content: rawPost.content,
                 coverImage: {
                   url: data.publicUrl,
