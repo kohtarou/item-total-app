@@ -11,7 +11,6 @@ import {
 import { twMerge } from "tailwind-merge";
 import Link from "next/link";
 import Modal from "@/app/_components/Modal";
-import { useAuth } from "@/app/_hooks/useAuth";
 import { supabase } from "@/utils/supabase";
 import CryptoJS from "crypto-js";
 import Image from "next/image";
@@ -77,7 +76,6 @@ const Page: React.FC = () => {
 
   const { id } = useParams() as { id: string };
   const router = useRouter();
-  const { token } = useAuth(); // トークンの取得
   const hiddenFileInputRef = useRef<HTMLInputElement>(null);
 
   // カテゴリ配列 (State)。取得中と取得失敗時は null、既存カテゴリが0個なら []
@@ -240,11 +238,6 @@ const Page: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!token) {
-      window.alert("予期せぬ動作：トークンが取得できません。");
-      return;
-    }
-
     setIsSubmitting(true);
 
     try {
@@ -266,7 +259,6 @@ const Page: React.FC = () => {
         cache: "no-store",
         headers: {
           "Content-Type": "application/json",
-          Authorization: token, // ◀ 追加
         },
         body: JSON.stringify(requestBody),
       });
@@ -290,19 +282,11 @@ const Page: React.FC = () => {
   };
 
   const handleDelete = async () => {
-    if (!token) {
-      window.alert("予期せぬ動作：トークンが取得できません。");
-      return;
-    }
-
     setIsSubmitting(true);
     try {
       const requestUrl = `/api/admin/posts/${id}`;
       const response = await fetch(requestUrl, {
         method: "DELETE",
-        headers: {
-          Authorization: token, // ◀ 追加
-        },
       });
       if (!response.ok) {
         throw new Error("削除に失敗しました");
