@@ -99,7 +99,6 @@ export const DELETE = async (req: NextRequest, routeParams: RouteParams) => {
       );
     }
 
-    /*
     // 管理者チェック
     const { user } = data;
     const { data: userData, error: userError } = await supabase
@@ -114,7 +113,7 @@ export const DELETE = async (req: NextRequest, routeParams: RouteParams) => {
         { status: 403 }
       );
     }
-*/
+
     const post: Post = await prisma.post.delete({
       where: { id },
     });

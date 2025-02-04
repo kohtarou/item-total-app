@@ -37,7 +37,6 @@ export const POST = async (req: NextRequest) => {
       );
     }
 
-    /*
     // 管理者チェック
     const { user } = data;
     const { data: userData, error: userError } = await supabase
@@ -52,7 +51,6 @@ export const POST = async (req: NextRequest) => {
         { status: 403 }
       );
     }
-*/
 
     // 投稿記事テーブルにレコードを追加
     const post: Post = await prisma.post.create({

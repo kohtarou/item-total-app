@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { twMerge } from "tailwind-merge";
+import { useAuth } from "@/app/_hooks/useAuth";
 import { supabase } from "@/utils/supabase";
 import CryptoJS from "crypto-js"; // 追加
 import Image from "next/image"; // 追加
@@ -43,6 +44,7 @@ const Page: React.FC = () => {
   const [newContent, setNewContent] = useState("");
   const [coverImageKey, setCoverImageKey] = useState<string | undefined>(); // 変更
   const [coverImageUrl, setCoverImageUrl] = useState<string | undefined>(); // 追加
+  const { token } = useAuth();
   const hiddenFileInputRef = useRef<HTMLInputElement>(null); // 追加
 
   const router = useRouter();
@@ -154,7 +156,10 @@ const Page: React.FC = () => {
   // フォームの送信処理
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+    if (!token) {
+      window.alert("予期せぬ動作：トークンが取得できません。");
+      return;
+    }
     setIsSubmitting(true);
 
     try {
@@ -176,6 +181,7 @@ const Page: React.FC = () => {
         cache: "no-store",
         headers: {
           "Content-Type": "application/json",
+          Authorization: token, //追加
         },
         body: JSON.stringify(requestBody),
       });
