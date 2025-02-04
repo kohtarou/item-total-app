@@ -24,7 +24,7 @@ const main = async () => {
       finishday: "2025-01-14",
       itemcounter: "100",
       content: "ログインボーナスでダイヤ100個プレゼント！",
-      coverImageKey: "private/cover-img-red.jpg",
+      coverImageKey: "private/1-1-1-14.png",
       categories: {
         create: [{ categoryId: c1.id }],
       },
@@ -38,7 +38,7 @@ const main = async () => {
       finishday: "2025-01-06",
       itemcounter: "30",
       content: "報酬が普段の2倍！30個獲得可能！",
-      coverImageKey: "private/cover-img-green.jpg",
+      coverImageKey: "private/1-1-1-6.png",
       categories: {
         create: [{ categoryId: c2.id }],
       },
@@ -52,7 +52,7 @@ const main = async () => {
       finishday: "2025-01-07",
       itemcounter: "100",
       content: "コビー登場記念！たなPから虹のダイヤ100個プレゼント！",
-      coverImageKey: "private/cover-img-yellow.jpg",
+      coverImageKey: "private/1-7.jpg",
       categories: {
         create: [{ categoryId: c3.id }],
       },
