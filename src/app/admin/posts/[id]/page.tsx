@@ -213,18 +213,10 @@ const Page: React.FC = () => {
     // 複数ファイルが選択されている場合は最初のファイルを使用する
     const file = e.target.files?.[0];
 
-    // ファイルの拡張子をチェック
-    const allowedExtensions = ["jpg", "jpeg", "png"];
-    const fileExtension = file.name.split(".").pop()?.toLowerCase();
-    if (!fileExtension || !allowedExtensions.includes(fileExtension)) {
-      window.alert("許可されているファイル形式は jpg, jpeg, png のみです。");
-      return;
-    }
-
     // ファイルのハッシュ値を計算
     const fileHash = await calculateMD5Hash(file);
     // バケット内のパスを指定
-    const path = `public/${fileHash}`;
+    const path = `private/${fileHash}`;
     // ファイルが存在する場合は上書きするための設定 → upsert: true
     const { data, error } = await supabase.storage
       .from("cover_image")
