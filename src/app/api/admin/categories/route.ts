@@ -15,6 +15,7 @@ export const POST = async (req: NextRequest) => {
     const token = req.headers.get("Authorization") ?? "";
     const { data, error } = await supabase.auth.getUser(token);
     if (error || !data.user) {
+      console.error("認証エラー:", error);
       return NextResponse.json(
         { error: "認証に失敗しました" },
         { status: 401 }
@@ -30,20 +31,21 @@ export const POST = async (req: NextRequest) => {
       .single();
 
     if (userError || !userData.is_admin) {
+      console.error("管理者権限エラー:", userError);
       return NextResponse.json(
         { error: "管理者権限が必要です" },
         { status: 403 }
       );
     }
 
-    const category: Category = await prisma.category.create({
+    const category = await prisma.category.create({
       data: {
         name,
       },
     });
     return NextResponse.json(category);
   } catch (error) {
-    console.error(error);
+    console.error("カテゴリ作成エラー:", error);
     return NextResponse.json(
       { error: "カテゴリの作成に失敗しました" },
       { status: 500 }
