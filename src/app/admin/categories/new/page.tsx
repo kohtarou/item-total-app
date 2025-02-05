@@ -8,6 +8,7 @@ import { faTriangleExclamation } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 import { useAuth } from "@/app/_hooks/useAuth";
 import { useRouter } from "next/navigation";
+import { supabase } from "@/utils/supabase";
 
 // カテゴリをフェッチしたときのレスポンスのデータ型
 type CategoryApiResponse = {

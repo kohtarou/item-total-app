@@ -11,6 +11,7 @@ import { twMerge } from "tailwind-merge";
 import { Category } from "@/app/_types/Category";
 import Link from "next/link";
 import Modal from "@/app/_components/Modal";
+import { supabase } from "@/utils/supabase";
 
 // カテゴリをフェッチしたときのレスポンスのデータ型
 type RawApiCategoryResponse = {
