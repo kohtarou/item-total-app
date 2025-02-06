@@ -21,23 +21,7 @@ export const POST = async (req: NextRequest) => {
         { status: 401 }
       );
     }
-    /*
-    // 管理者チェック
-    const { user } = data;
-    const { data: userData, error: userError } = await supabase
-      .from("profiles")
-      .select("is_admin")
-      .eq("id", user.id)
-      .single();
 
-    if (userError || !userData.is_admin) {
-      console.error("管理者権限エラー:", userError);
-      return NextResponse.json(
-        { error: "管理者権限が必要です" },
-        { status: 403 }
-      );
-    }
-*/
     const category = await prisma.category.create({
       data: {
         name,

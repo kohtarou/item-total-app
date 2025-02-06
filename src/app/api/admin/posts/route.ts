@@ -1,10 +1,8 @@
-import prisma from "@/lib/prisma";
-import { NextResponse, NextRequest } from "next/server";
-import { Post } from "@prisma/client";
-import { Prisma } from "@prisma/client";
+import { NextRequest, NextResponse } from "next/server";
+import { PrismaClient, Prisma } from "@prisma/client";
 import { supabase } from "@/utils/supabase";
 
-export const revalidate = 0; // ◀ サーバサイドのキャッシュを無効化する設定
+const prisma = new PrismaClient();
 
 type RequestBody = {
   title: string;
@@ -12,7 +10,7 @@ type RequestBody = {
   finishday: string;
   itemcounter: string;
   content: string;
-  coverImageKey: string; // 変更
+  coverImageKey: string;
   categoryIds: string[];
 };
 
@@ -27,7 +25,9 @@ export const POST = async (req: NextRequest) => {
       content,
       coverImageKey,
       categoryIds,
-    } = requestBody; // 変更
+    } = requestBody;
+
+    // 認証チェック
     const token = req.headers.get("Authorization") ?? "";
     const { data, error } = await supabase.auth.getUser(token);
     if (error || !data.user) {
@@ -36,31 +36,16 @@ export const POST = async (req: NextRequest) => {
         { status: 401 }
       );
     }
-    /*
-    // 管理者チェック
-    const { user } = data;
-    const { data: userData, error: userError } = await supabase
-      .from("profiles")
-      .select("is_admin")
-      .eq("id", user.id)
-      .single();
 
-    if (userError || !userData.is_admin) {
-      return NextResponse.json(
-        { error: "管理者権限が必要です" },
-        { status: 403 }
-      );
-    }
-*/
     // 投稿記事テーブルにレコードを追加
-    const post: Post = await prisma.post.create({
+    const post = await prisma.post.create({
       data: {
         title,
         startday,
         finishday,
         itemcounter,
         content,
-        coverImageKey, // 変更
+        coverImageKey,
         categories: {
           create: categoryIds.map((categoryId) => ({
             categoryId,
@@ -71,7 +56,7 @@ export const POST = async (req: NextRequest) => {
 
     return NextResponse.json(post);
   } catch (error) {
-    console.error(error);
+    console.error("エラー:", error);
 
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
       if (error.code === "P2003") {

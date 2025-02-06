@@ -98,22 +98,7 @@ export const DELETE = async (req: NextRequest, routeParams: RouteParams) => {
         { status: 401 }
       );
     }
-    /*
-    // 管理者チェック
-    const { user } = data;
-    const { data: userData, error: userError } = await supabase
-      .from("profiles")
-      .select("is_admin")
-      .eq("id", user.id)
-      .single();
 
-    if (userError || !userData.is_admin) {
-      return NextResponse.json(
-        { error: "管理者権限が必要です" },
-        { status: 403 }
-      );
-    }
-*/
     const post: Post = await prisma.post.delete({
       where: { id },
     });
