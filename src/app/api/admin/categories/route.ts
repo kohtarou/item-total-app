@@ -21,7 +21,7 @@ export const POST = async (req: NextRequest) => {
         { status: 401 }
       );
     }
-
+    /*
     // 管理者チェック
     const { user } = data;
     const { data: userData, error: userError } = await supabase
@@ -37,7 +37,7 @@ export const POST = async (req: NextRequest) => {
         { status: 403 }
       );
     }
-
+*/
     const category = await prisma.category.create({
       data: {
         name,

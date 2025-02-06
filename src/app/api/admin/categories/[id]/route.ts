@@ -27,7 +27,7 @@ export const PUT = async (req: NextRequest, routeParams: RouteParams) => {
         { status: 401 }
       );
     }
-
+    /*
     // 管理者チェック
     const { user } = data;
     const { data: userData, error: userError } = await supabase
@@ -42,7 +42,7 @@ export const PUT = async (req: NextRequest, routeParams: RouteParams) => {
         { status: 403 }
       );
     }
-
+*/
     const category: Category = await prisma.category.update({
       where: { id },
       data: { name },

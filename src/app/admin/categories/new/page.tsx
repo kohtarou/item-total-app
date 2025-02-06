@@ -114,7 +114,7 @@ const Page: React.FC = () => {
         cache: "no-store",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`, // トークンを設定
+          Authorization: token, //追加
         },
         body: JSON.stringify(requestBody),
       });
