@@ -8,6 +8,7 @@ import { useAuth } from "@/app/_hooks/useAuth";
 import { supabase } from "@/utils/supabase";
 import CryptoJS from "crypto-js"; // 追加
 import Image from "next/image"; // 追加
+import { Calendar } from "@/components/ui/calendar";
 
 // カテゴリをフェッチしたときのレスポンスのデータ型
 type CategoryApiResponse = {
@@ -38,8 +39,8 @@ const Page: React.FC = () => {
   const [fetchErrorMsg, setFetchErrorMsg] = useState<string | null>(null);
 
   const [newTitle, setNewTitle] = useState("");
-  const [newStartday, setNewStartday] = useState("");
-  const [newFinishday, setNewFinishday] = useState("");
+  const [newStartday, setNewStartday] = useState<Date | null>(null); // 変更
+  const [newFinishday, setNewFinishday] = useState<Date | null>(null); // 変更
   const [newItemcounter, setNewItemcounter] = useState("");
   const [newContent, setNewContent] = useState("");
   const [coverImageKey, setCoverImageKey] = useState<string | undefined>(); // 変更
@@ -165,8 +166,8 @@ const Page: React.FC = () => {
     try {
       const requestBody = {
         title: newTitle,
-        startday: newStartday,
-        finishday: newFinishday,
+        startday: newStartday?.toISOString(), // 変更
+        finishday: newFinishday?.toISOString(), // 変更
         itemcounter: newItemcounter,
         content: newContent,
         coverImageKey, // 変更
@@ -249,6 +250,48 @@ const Page: React.FC = () => {
             value={newTitle}
             onChange={updateNewTitle}
             placeholder="タイトルを記入してください"
+            required
+          />
+        </div>
+
+        <div className="space-y-1">
+          <label htmlFor="startday" className="block font-bold">
+            開始日
+          </label>
+          <Calendar
+            id="startday"
+            selected={newStartday}
+            onChange={setNewStartday}
+            className="w-full rounded-md border-2 px-2 py-1"
+            required
+          />
+        </div>
+
+        <div className="space-y-1">
+          <label htmlFor="finishday" className="block font-bold">
+            終了日
+          </label>
+          <Calendar
+            id="finishday"
+            selected={newFinishday}
+            onChange={setNewFinishday}
+            className="w-full rounded-md border-2 px-2 py-1"
+            required
+          />
+        </div>
+
+        <div className="space-y-1">
+          <label htmlFor="itemcounter" className="block font-bold">
+            アイテムカウンター
+          </label>
+          <input
+            type="number"
+            id="itemcounter"
+            name="itemcounter"
+            className="w-full rounded-md border-2 px-2 py-1"
+            value={newItemcounter}
+            onChange={(e) => setNewItemcounter(e.target.value)}
+            placeholder="アイテムカウンターを記入してください"
             required
           />
         </div>

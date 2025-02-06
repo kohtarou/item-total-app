@@ -25,6 +25,13 @@ const Page: React.FC = () => {
     setEmailError("");
   };
 
+  // 自動入力ボタンが押されたときの処理
+  const handleAutoFill = () => {
+    setEmail("adminuser@example.com");
+    setPassword("Password");
+    setEmailError("");
+  };
+
   // フォームのログインボタンが押下されたときの処理
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -97,7 +104,17 @@ const Page: React.FC = () => {
           />
         </div>
 
-        <div className="flex justify-end">
+        <div className="flex justify-between">
+          <button
+            type="button"
+            onClick={handleAutoFill}
+            className={twMerge(
+              "rounded-md px-5 py-1 font-bold",
+              "bg-gray-500 text-white hover:bg-gray-600"
+            )}
+          >
+            自動入力
+          </button>
           <button
             type="submit"
             className={twMerge(
