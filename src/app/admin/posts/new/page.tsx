@@ -6,28 +6,17 @@ import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { twMerge } from "tailwind-merge";
 import { useAuth } from "@/app/_hooks/useAuth";
 import { supabase } from "@/utils/supabase";
-import CryptoJS from "crypto-js"; // 追加
-import Image from "next/image"; // 追加
-import { zodResolver } from "@hookform/resolvers/zod"; // 追加
-import { useForm } from "react-hook-form"; // 追加
-import { z } from "zod"; // 追加
-import { format } from "date-fns"; // 追加
-import { CalendarIcon } from "lucide-react"; // 追加
-import { Calendar } from "@/components/ui/calendar"; // 追加
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form"; // 追加
+import CryptoJS from "crypto-js";
+import Image from "next/image";
+import { format } from "date-fns";
+import { CalendarIcon } from "lucide-react";
+import { Calendar } from "@/components/ui/calendar";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover"; // 追加
+} from "@/components/ui/popover";
+import { Button } from "@/components/ui/button";
 
 // カテゴリをフェッチしたときのレスポンスのデータ型
 type CategoryApiResponse = {
@@ -51,16 +40,6 @@ const calculateMD5Hash = async (file: File): Promise<string> => {
   return CryptoJS.MD5(wordArray).toString();
 };
 
-// フォームのバリデーションスキーマ
-const FormSchema = z.object({
-  startday: z.date({
-    required_error: "開始日を選択してください。",
-  }),
-  finishday: z.date({
-    required_error: "終了日を選択してください。",
-  }),
-});
-
 // 投稿記事の新規作成のページ
 const Page: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -68,12 +47,14 @@ const Page: React.FC = () => {
   const [fetchErrorMsg, setFetchErrorMsg] = useState<string | null>(null);
 
   const [newTitle, setNewTitle] = useState("");
-  const [newItemcounter, setNewItemcounter] = useState("");
+  const [newStartday, setNewStartday] = useState<Date | undefined>();
+  const [newFinishday, setNewFinishday] = useState<Date | undefined>();
+  const [newItemcounter, setNewItemcounter] = useState<number | undefined>();
   const [newContent, setNewContent] = useState("");
-  const [coverImageKey, setCoverImageKey] = useState<string | undefined>(); // 変更
-  const [coverImageUrl, setCoverImageUrl] = useState<string | undefined>(); // 追加
+  const [coverImageKey, setCoverImageKey] = useState<string | undefined>();
+  const [coverImageUrl, setCoverImageUrl] = useState<string | undefined>();
   const { token } = useAuth();
-  const hiddenFileInputRef = useRef<HTMLInputElement>(null); // 追加
+  const hiddenFileInputRef = useRef<HTMLInputElement>(null);
 
   const router = useRouter();
 
@@ -99,7 +80,7 @@ const Page: React.FC = () => {
         // レスポンスのステータスコードが200以外の場合 (カテゴリのフェッチに失敗した場合)
         if (!res.ok) {
           setCheckableCategories(null);
-          throw new Error(`${res.status}: ${res.statusText}`); // -> catch節に移動
+          throw new Error(`${res.status}: ${res.statusText}`);
         }
 
         // レスポンスのボディをJSONとして読み取りカテゴリ配列 (State) にセット
@@ -126,11 +107,6 @@ const Page: React.FC = () => {
 
     fetchCategories();
   }, []);
-
-  // フォームの設定
-  const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
-  });
 
   // チェックボックスの状態 (State) を更新する関数
   const switchCategoryState = (categoryId: string) => {
@@ -165,9 +141,9 @@ const Page: React.FC = () => {
     // 複数ファイルが選択されている場合は最初のファイルを使用する
     const file = e.target.files?.[0];
     // ファイルのハッシュ値を計算
-    const fileHash = await calculateMD5Hash(file); // 追加
+    const fileHash = await calculateMD5Hash(file);
     // バケット内のパスを指定
-    const path = `private/${fileHash}`; // 変更
+    const path = `private/${fileHash}`;
     // ファイルが存在する場合は上書きするための設定 → upsert: true
     const { data, error } = await supabase.storage
       .from("cover_image")
@@ -187,7 +163,8 @@ const Page: React.FC = () => {
   };
 
   // フォームの送信処理
-  const handleSubmit = async (data: z.infer<typeof FormSchema>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     if (!token) {
       window.alert("予期せぬ動作：トークンが取得できません。");
       return;
@@ -197,11 +174,11 @@ const Page: React.FC = () => {
     try {
       const requestBody = {
         title: newTitle,
-        startday: data.startday.toISOString(), // 変更
-        finishday: data.finishday.toISOString(), // 変更
+        startday: newStartday?.toISOString(),
+        finishday: newFinishday?.toISOString(),
         itemcounter: newItemcounter,
         content: newContent,
-        coverImageKey, // 変更
+        coverImageKey,
         categoryIds: checkableCategories
           ? checkableCategories.filter((c) => c.isSelect).map((c) => c.id)
           : [],
@@ -213,7 +190,7 @@ const Page: React.FC = () => {
         cache: "no-store",
         headers: {
           "Content-Type": "application/json",
-          Authorization: token, //追加
+          Authorization: token,
         },
         body: JSON.stringify(requestBody),
       });
@@ -265,211 +242,211 @@ const Page: React.FC = () => {
         </div>
       )}
 
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
-          <div className="space-y-1">
-            <label htmlFor="title" className="block font-bold">
-              タイトル
-            </label>
-            <input
-              type="text"
-              id="title"
-              name="title"
-              className="w-full rounded-md border-2 px-2 py-1"
-              value={newTitle}
-              onChange={updateNewTitle}
-              placeholder="タイトルを記入してください"
-              required
-            />
-          </div>
-
-          <FormField
-            control={form.control}
-            name="startday"
-            render={({ field }) => (
-              <FormItem className="flex flex-col">
-                <FormLabel>開始日</FormLabel>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <FormControl>
-                      <Button
-                        variant={"outline"}
-                        className={twMerge(
-                          "w-[240px] pl-3 text-left font-normal",
-                          !field.value && "text-muted-foreground"
-                        )}
-                      >
-                        {field.value ? (
-                          format(field.value, "PPP")
-                        ) : (
-                          <span>日付を選択</span>
-                        )}
-                        <CalendarIcon className="ml-auto size-4 opacity-50" />
-                      </Button>
-                    </FormControl>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="start">
-                    <Calendar
-                      mode="single"
-                      selected={field.value}
-                      onSelect={field.onChange}
-                      disabled={(date) =>
-                        date > new Date() || date < new Date("1900-01-01")
-                      }
-                      initialFocus
-                    />
-                  </PopoverContent>
-                </Popover>
-                <FormDescription>開始日は必須です。</FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
+      <form
+        onSubmit={handleSubmit}
+        className={twMerge("space-y-4", isSubmitting && "opacity-50")}
+      >
+        <div className="space-y-1">
+          <label htmlFor="title" className="block font-bold">
+            タイトル
+          </label>
+          <input
+            type="text"
+            id="title"
+            name="title"
+            className="w-full rounded-md border-2 px-2 py-1"
+            value={newTitle}
+            onChange={updateNewTitle}
+            placeholder="タイトルを記入してください"
+            required
           />
+        </div>
 
-          <FormField
-            control={form.control}
-            name="finishday"
-            render={({ field }) => (
-              <FormItem className="flex flex-col">
-                <FormLabel>終了日</FormLabel>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <FormControl>
-                      <Button
-                        variant={"outline"}
-                        className={twMerge(
-                          "w-[240px] pl-3 text-left font-normal",
-                          !field.value && "text-muted-foreground"
-                        )}
-                      >
-                        {field.value ? (
-                          format(field.value, "PPP")
-                        ) : (
-                          <span>日付を選択</span>
-                        )}
-                        <CalendarIcon className="ml-auto size-4 opacity-50" />
-                      </Button>
-                    </FormControl>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="start">
-                    <Calendar
-                      mode="single"
-                      selected={field.value}
-                      onSelect={field.onChange}
-                      disabled={(date) =>
-                        date > new Date() || date < new Date("1900-01-01")
-                      }
-                      initialFocus
-                    />
-                  </PopoverContent>
-                </Popover>
-                <FormDescription>終了日は必須です。</FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+        <div className="space-y-1">
+          <label htmlFor="startday" className="block font-bold">
+            開始日
+          </label>
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                variant={"outline"}
+                className={twMerge(
+                  "w-full pl-3 text-left font-normal",
+                  !newStartday && "text-muted-foreground"
+                )}
+              >
+                {newStartday ? (
+                  format(newStartday, "yyyy-MM-dd")
+                ) : (
+                  <span>日付を選択</span>
+                )}
+                <CalendarIcon className="ml-auto size-4 opacity-50" />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0" align="start">
+              <Calendar
+                mode="single"
+                selected={newStartday}
+                onSelect={setNewStartday}
+                initialFocus
+              />
+            </PopoverContent>
+          </Popover>
+        </div>
 
-          <div className="space-y-1">
-            <label htmlFor="itemcounter" className="block font-bold">
-              アイテムカウンター
-            </label>
-            <input
-              type="number"
-              id="itemcounter"
-              name="itemcounter"
-              className="w-full rounded-md border-2 px-2 py-1"
-              value={newItemcounter}
-              onChange={(e) => setNewItemcounter(e.target.value)}
-              placeholder="アイテムカウンターを記入してください"
-              required
-            />
-          </div>
+        <div className="space-y-1">
+          <label htmlFor="finishday" className="block font-bold">
+            終了日
+          </label>
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                variant={"outline"}
+                className={twMerge(
+                  "w-full pl-3 text-left font-normal",
+                  !newFinishday && "text-muted-foreground"
+                )}
+              >
+                {newFinishday ? (
+                  format(newFinishday, "yyyy-MM-dd")
+                ) : (
+                  <span>日付を選択</span>
+                )}
+                <CalendarIcon className="ml-auto size-4 opacity-50" />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0" align="start">
+              <Calendar
+                mode="single"
+                selected={newFinishday}
+                onSelect={setNewFinishday}
+                initialFocus
+              />
+            </PopoverContent>
+          </Popover>
+        </div>
 
-          <div className="space-y-1">
-            <label htmlFor="content" className="block font-bold">
-              本文
-            </label>
-            <textarea
-              id="content"
-              name="content"
-              className="h-48 w-full rounded-md border-2 px-2 py-1"
-              value={newContent}
-              onChange={updateNewContent}
-              placeholder="本文を記入してください"
-              required
-            />
-          </div>
-
-          <div className="space-y-1">
-            <label htmlFor="coverImage" className="block font-bold">
-              カバーイメージ
-            </label>
-            <input
-              id="coverImage"
-              type="file"
-              accept="image/*"
-              onChange={handleImageChange}
-              hidden={true}
-              ref={hiddenFileInputRef}
-            />
-            <button
-              type="button"
-              onClick={() => hiddenFileInputRef.current?.click()}
-              className="rounded-md bg-indigo-500 px-3 py-1 text-white"
+        <div className="space-y-1">
+          <label htmlFor="itemcounter" className="block font-bold">
+            アイテムカウンター
+          </label>
+          <Popover>
+            <PopoverTrigger asChild>
+              <input
+                type="text"
+                id="itemcounter"
+                name="itemcounter"
+                className="w-full rounded-md border-2 px-2 py-1"
+                value={newItemcounter}
+                onChange={(e) => setNewItemcounter(Number(e.target.value))}
+                placeholder="アイテムカウンターを記入してください"
+                required
+              />
+            </PopoverTrigger>
+            <PopoverContent
+              className="h-48 w-32 overflow-y-auto p-0"
+              align="end"
             >
-              ファイルを選択
-            </button>
-            {coverImageUrl && (
-              <div className="mt-2">
-                <Image
-                  className="w-1/2 border-2 border-gray-300"
-                  src={coverImageUrl}
-                  alt="プレビュー画像"
-                  width={1024}
-                  height={1024}
-                  priority
-                />
+              <div className="grid grid-cols-1 gap-2 p-2">
+                {[...Array(100).keys()].map((num) => (
+                  <button
+                    key={num}
+                    type="button"
+                    className="rounded-md bg-gray-200 p-2 text-center hover:bg-gray-300"
+                    onClick={() => setNewItemcounter(num + 1)}
+                  >
+                    {num + 1}
+                  </button>
+                ))}
               </div>
+            </PopoverContent>
+          </Popover>
+        </div>
+
+        <div className="space-y-1">
+          <label htmlFor="content" className="block font-bold">
+            本文
+          </label>
+          <textarea
+            id="content"
+            name="content"
+            className="h-48 w-full rounded-md border-2 px-2 py-1"
+            value={newContent}
+            onChange={updateNewContent}
+            placeholder="本文を記入してください"
+            required
+          />
+        </div>
+
+        <div className="space-y-1">
+          <label htmlFor="coverImage" className="block font-bold">
+            カバーイメージ
+          </label>
+          <input
+            id="coverImage"
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+            hidden={true}
+            ref={hiddenFileInputRef}
+          />
+          <button
+            type="button"
+            onClick={() => hiddenFileInputRef.current?.click()}
+            className="rounded-md bg-indigo-500 px-3 py-1 text-white"
+          >
+            ファイルを選択
+          </button>
+          {coverImageUrl && (
+            <div className="mt-2">
+              <Image
+                className="w-1/2 border-2 border-gray-300"
+                src={coverImageUrl}
+                alt="プレビュー画像"
+                width={1024}
+                height={1024}
+                priority
+              />
+            </div>
+          )}
+        </div>
+
+        <div className="space-y-1">
+          <div className="font-bold">タグ</div>
+          <div className="flex flex-wrap gap-x-3.5">
+            {checkableCategories.length > 0 ? (
+              checkableCategories.map((c) => (
+                <label key={c.id} className="flex space-x-1">
+                  <input
+                    id={c.id}
+                    type="checkbox"
+                    checked={c.isSelect}
+                    className="mt-0.5 cursor-pointer"
+                    onChange={() => switchCategoryState(c.id)}
+                  />
+                  <span className="cursor-pointer">{c.name}</span>
+                </label>
+              ))
+            ) : (
+              <div>選択可能なカテゴリが存在しません。</div>
             )}
           </div>
+        </div>
 
-          <div className="space-y-1">
-            <div className="font-bold">タグ</div>
-            <div className="flex flex-wrap gap-x-3.5">
-              {checkableCategories.length > 0 ? (
-                checkableCategories.map((c) => (
-                  <label key={c.id} className="flex space-x-1">
-                    <input
-                      id={c.id}
-                      type="checkbox"
-                      checked={c.isSelect}
-                      className="mt-0.5 cursor-pointer"
-                      onChange={() => switchCategoryState(c.id)}
-                    />
-                    <span className="cursor-pointer">{c.name}</span>
-                  </label>
-                ))
-              ) : (
-                <div>選択可能なカテゴリが存在しません。</div>
-              )}
-            </div>
-          </div>
-
-          <div className="flex justify-end">
-            <button
-              type="submit"
-              className={twMerge(
-                "rounded-md px-5 py-1 font-bold",
-                "bg-indigo-500 text-white hover:bg-indigo-600",
-                "disabled:cursor-not-allowed"
-              )}
-              disabled={isSubmitting}
-            >
-              記事を投稿
-            </button>
-          </div>
-        </form>
-      </Form>
+        <div className="flex justify-end">
+          <button
+            type="submit"
+            className={twMerge(
+              "rounded-md px-5 py-1 font-bold",
+              "bg-indigo-500 text-white hover:bg-indigo-600",
+              "disabled:cursor-not-allowed"
+            )}
+            disabled={isSubmitting}
+          >
+            記事を投稿
+          </button>
+        </div>
+      </form>
     </main>
   );
 };
