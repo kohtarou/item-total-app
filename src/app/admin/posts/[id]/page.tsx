@@ -414,7 +414,7 @@ const Page: React.FC = () => {
         </div>
 
         <div className="space-y-1">
-          <div className="font-bold">タグ</div>
+          <div className="font-bold">カテゴリ</div>
           <div className="flex flex-wrap gap-x-3.5">
             {checkableCategories!.length > 0 ? (
               checkableCategories!.map((c) => (

@@ -2,8 +2,14 @@
 import { useState, useEffect, useRef, ChangeEvent } from "react";
 import { useRouter } from "next/navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import {
+  faSpinner,
+  faDownload,
+  faArrowLeft,
+} from "@fortawesome/free-solid-svg-icons";
 import { twMerge } from "tailwind-merge";
+import Link from "next/link";
+import Modal from "@/app/_components/Modal";
 import { useAuth } from "@/app/_hooks/useAuth";
 import { supabase } from "@/utils/supabase";
 import CryptoJS from "crypto-js";
@@ -45,6 +51,7 @@ const Page: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [fetchErrorMsg, setFetchErrorMsg] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [newTitle, setNewTitle] = useState("");
   const [newStartday, setNewStartday] = useState<Date | undefined>();
@@ -163,8 +170,7 @@ const Page: React.FC = () => {
   };
 
   // フォームの送信処理
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
     if (!token) {
       window.alert("予期せぬ動作：トークンが取得できません。");
       return;
@@ -243,7 +249,10 @@ const Page: React.FC = () => {
       )}
 
       <form
-        onSubmit={handleSubmit}
+        onSubmit={(e) => {
+          e.preventDefault();
+          setIsModalOpen(true);
+        }}
         className={twMerge("space-y-4", isSubmitting && "opacity-50")}
       >
         <div className="space-y-1">
@@ -412,7 +421,7 @@ const Page: React.FC = () => {
         </div>
 
         <div className="space-y-1">
-          <div className="font-bold">タグ</div>
+          <div className="font-bold">カテゴリ</div>
           <div className="flex flex-wrap gap-x-3.5">
             {checkableCategories.length > 0 ? (
               checkableCategories.map((c) => (
@@ -421,10 +430,10 @@ const Page: React.FC = () => {
                     id={c.id}
                     type="checkbox"
                     checked={c.isSelect}
-                    className="mt-0.5 cursor-pointer"
+                    className="mt-0.5 size-5 cursor-pointer appearance-none rounded-full border-2 border-black checked:bg-blue-500"
                     onChange={() => switchCategoryState(c.id)}
                   />
-                  <span className="cursor-pointer">{c.name}</span>
+                  <span className="cursor-pointer font-bold">{c.name}</span>
                 </label>
               ))
             ) : (
@@ -433,20 +442,43 @@ const Page: React.FC = () => {
           </div>
         </div>
 
-        <div className="flex justify-end">
-          <button
-            type="submit"
-            className={twMerge(
-              "rounded-md px-5 py-1 font-bold",
-              "bg-indigo-500 text-white hover:bg-indigo-600",
-              "disabled:cursor-not-allowed"
-            )}
-            disabled={isSubmitting}
-          >
-            記事を投稿
-          </button>
+        <div className="flex items-center justify-between">
+          <Link href="/admin/posts">
+            <button
+              type="button"
+              className={twMerge(
+                "rounded-md px-2 py-1 font-bold",
+                "bg-gray-500 text-white hover:bg-gray-600"
+              )}
+            >
+              <FontAwesomeIcon icon={faArrowLeft} className="mr-1" />
+              戻る
+            </button>
+          </Link>
+
+          <div className="flex space-x-2">
+            <button
+              type="submit"
+              className={twMerge(
+                "rounded-md px-2 py-1 font-bold",
+                "bg-indigo-500 text-white hover:bg-indigo-600",
+                "disabled:cursor-not-allowed"
+              )}
+              disabled={isSubmitting}
+            >
+              <FontAwesomeIcon icon={faDownload} className="mr-1" />
+              記事を投稿
+            </button>
+          </div>
         </div>
       </form>
+
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onConfirm={handleSubmit}
+        message={`投稿「${newTitle}」を投稿しますか？`}
+      />
     </main>
   );
 };
