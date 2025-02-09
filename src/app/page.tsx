@@ -6,7 +6,7 @@ import PostSummary from "@/app/_components/PostSummary";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
-import { supabase } from "@/utils/supabase"; // 追加
+import { supabase } from "@/utils/supabase";
 
 const Page: React.FC = () => {
   const [posts, setPosts] = useState<Post[] | null>(null);
@@ -25,26 +25,29 @@ const Page: React.FC = () => {
           throw new Error("データの取得に失敗しました");
         }
         const postResponse: PostApiResponse[] = await response.json();
+
         setPosts(
           await Promise.all(
-            postResponse.map(async (rawPost) => {
+            postResponse.map(async (postResponse) => {
               const { data } = supabase.storage
                 .from("cover_image")
-                .getPublicUrl(rawPost.coverImageKey);
+                .getPublicUrl(postResponse.coverImageKey);
+              const coverImageUrl =
+                data.publicUrl || "/path/to/default/image.jpg"; // デフォルト画像のURLを設定
               return {
-                id: rawPost.id,
-                title: rawPost.title,
-                startday: rawPost.startday,
-                finishday: rawPost.finishday,
-                itemcounter: rawPost.itemcounter,
-                content: rawPost.content,
+                id: postResponse.id,
+                title: postResponse.title,
+                startday: postResponse.startday,
+                finishday: postResponse.finishday,
+                itemcounter: postResponse.itemcounter,
+                content: postResponse.content,
                 coverImage: {
-                  url: data.publicUrl,
-                  width: 1000,
-                  height: 1000,
+                  url: coverImageUrl,
+                  width: 200, // 画像の幅を小さく設定
+                  height: 200, // 画像の高さを小さく設定
                 },
-                createdAt: rawPost.createdAt,
-                categories: rawPost.categories.map((category) => ({
+                createdAt: postResponse.createdAt,
+                categories: postResponse.categories.map((category) => ({
                   id: category.category.id,
                   name: category.category.name,
                 })),
