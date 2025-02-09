@@ -32,8 +32,9 @@ const Page: React.FC = () => {
               const { data } = supabase.storage
                 .from("cover_image")
                 .getPublicUrl(postResponse.coverImageKey);
+
               const coverImageUrl =
-                data.publicUrl || "/path/to/default/image.jpg"; // デフォルト画像のURLを設定
+                data?.publicUrl || "/path/to/default/image.jpg"; // デフォルト画像のURLを設定
               return {
                 id: postResponse.id,
                 title: postResponse.title,

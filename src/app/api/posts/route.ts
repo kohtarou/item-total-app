@@ -15,6 +15,7 @@ export const GET = async (req: NextRequest) => {
         finishday: true,
         itemcounter: true,
         content: true,
+        coverImageKey: true, // 追加
         createdAt: true,
         categories: {
           select: {

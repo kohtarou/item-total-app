@@ -5,7 +5,6 @@ import { twMerge } from "tailwind-merge";
 import DOMPurify from "isomorphic-dompurify";
 import Link from "next/link";
 import Image from "next/image";
-import { supabase } from "@/utils/supabase"; // 追加
 
 type Props = {
   post: Post;
