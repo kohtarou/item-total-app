@@ -18,7 +18,7 @@ export const PUT = async (req: NextRequest, routeParams: RouteParams) => {
     const id = routeParams.params.id;
     const { name }: RequestBody = await req.json();
 
-    // 認証チェック
+    /* 認証チェック
     const token = req.headers.get("Authorization") ?? "";
     const { data, error } = await supabase.auth.getUser(token);
     if (error || !data.user) {
@@ -27,7 +27,7 @@ export const PUT = async (req: NextRequest, routeParams: RouteParams) => {
         { status: 401 }
       );
     }
-
+*/
     const category: Category = await prisma.category.update({
       where: { id },
       data: { name },

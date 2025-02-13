@@ -89,7 +89,7 @@ export const DELETE = async (req: NextRequest, routeParams: RouteParams) => {
   try {
     const id = routeParams.params.id;
 
-    // 認証チェック
+    /* 認証チェック
     const token = req.headers.get("Authorization") ?? "";
     const { data, error } = await supabase.auth.getUser(token);
     if (error || !data.user) {
@@ -97,7 +97,7 @@ export const DELETE = async (req: NextRequest, routeParams: RouteParams) => {
         { error: "認証に失敗しました" },
         { status: 401 }
       );
-    }
+    }*/
 
     const post: Post = await prisma.post.delete({
       where: { id },

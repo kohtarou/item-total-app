@@ -15,6 +15,15 @@ import { useAuth } from "@/app/_hooks/useAuth";
 import { supabase } from "@/utils/supabase";
 import CryptoJS from "crypto-js";
 import Image from "next/image";
+import { format } from "date-fns";
+import { CalendarIcon } from "lucide-react";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Button } from "@/components/ui/button";
 
 // カテゴリをフェッチしたときのレスポンスのデータ型
 type RawApiCategoryResponse = {
@@ -66,7 +75,7 @@ const Page: React.FC = () => {
   const [newTitle, setNewTitle] = useState("");
   const [newStartday, setNewStartday] = useState("");
   const [newFinishday, setNewFinishday] = useState("");
-  const [newItemcounter, setNewItemcounter] = useState("");
+  const [newItemcounter, setNewItemcounter] = useState<number>(0);
   const [newContent, setNewContent] = useState("");
   const [newCoverImageKey, setNewCoverImageKey] = useState<
     string | undefined
@@ -159,8 +168,9 @@ const Page: React.FC = () => {
     if (!rawApiPostResponse || !checkableCategories) return;
 
     // 投稿記事のタイトル、本文、カバーイメージURLを更新
-    setNewTitle(rawApiPostResponse.title);
-
+    setNewStartday(rawApiPostResponse.startday); // 追加
+    setNewFinishday(rawApiPostResponse.finishday); // 追加
+    setNewItemcounter(Number(rawApiPostResponse.itemcounter)); // 追加
     setNewContent(rawApiPostResponse.content);
     setNewCoverImageKey(rawApiPostResponse.coverImageKey);
 
@@ -363,6 +373,107 @@ const Page: React.FC = () => {
             placeholder="タイトルを記入してください"
             required
           />
+        </div>
+
+        <div className="space-y-1">
+          <label htmlFor="startday" className="block font-bold">
+            開始日
+          </label>
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                variant={"outline"}
+                className={twMerge(
+                  "w-full pl-3 text-left font-normal",
+                  !newStartday && "text-muted-foreground"
+                )}
+              >
+                {newStartday ? (
+                  format(new Date(newStartday), "yyyy-MM-dd")
+                ) : (
+                  <span>日付を選択</span>
+                )}
+                <CalendarIcon className="ml-auto size-4 opacity-50" />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0" align="start">
+              <Calendar
+                mode="single"
+                selected={new Date(newStartday)}
+                onSelect={(date) => setNewStartday(date?.toISOString() || "")}
+                initialFocus
+              />
+            </PopoverContent>
+          </Popover>
+        </div>
+
+        <div className="space-y-1">
+          <label htmlFor="finishday" className="block font-bold">
+            終了日
+          </label>
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                variant={"outline"}
+                className={twMerge(
+                  "w-full pl-3 text-left font-normal",
+                  !newFinishday && "text-muted-foreground"
+                )}
+              >
+                {newFinishday ? (
+                  format(new Date(newFinishday), "yyyy-MM-dd")
+                ) : (
+                  <span>日付を選択</span>
+                )}
+                <CalendarIcon className="ml-auto size-4 opacity-50" />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0" align="start">
+              <Calendar
+                mode="single"
+                selected={new Date(newFinishday)}
+                onSelect={(date) => setNewFinishday(date?.toISOString() || "")}
+                initialFocus
+              />
+            </PopoverContent>
+          </Popover>
+        </div>
+
+        <div className="space-y-1">
+          <label htmlFor="itemcounter" className="block font-bold">
+            アイテムカウンター
+          </label>
+          <Popover>
+            <PopoverTrigger asChild>
+              <input
+                type="text"
+                id="itemcounter"
+                name="itemcounter"
+                className="w-full rounded-md border-2 px-2 py-1"
+                value={newItemcounter}
+                onChange={(e) => setNewItemcounter(Number(e.target.value))}
+                placeholder="アイテムカウンターを記入してください"
+                required
+              />
+            </PopoverTrigger>
+            <PopoverContent
+              className="h-48 w-32 overflow-y-auto p-0"
+              align="end"
+            >
+              <div className="grid grid-cols-1 gap-2 p-2">
+                {[...Array(100).keys()].map((num) => (
+                  <button
+                    key={num}
+                    type="button"
+                    className="rounded-md bg-gray-200 p-2 text-center hover:bg-gray-300"
+                    onClick={() => setNewItemcounter(num + 1)}
+                  >
+                    {num + 1}
+                  </button>
+                ))}
+              </div>
+            </PopoverContent>
+          </Popover>
         </div>
 
         <div className="space-y-1">

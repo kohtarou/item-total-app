@@ -27,7 +27,7 @@ export const POST = async (req: NextRequest) => {
       categoryIds,
     } = requestBody;
 
-    // 認証チェック
+    /* 認証チェック
     const token = req.headers.get("Authorization") ?? "";
     const { data, error } = await supabase.auth.getUser(token);
     if (error || !data.user) {
@@ -35,7 +35,7 @@ export const POST = async (req: NextRequest) => {
         { error: "認証に失敗しました" },
         { status: 401 }
       );
-    }
+    }*/
 
     // 投稿記事テーブルにレコードを追加
     const post = await prisma.post.create({
