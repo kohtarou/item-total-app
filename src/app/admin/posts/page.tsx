@@ -48,8 +48,8 @@ const Page: React.FC = () => {
               content: rawPost.content,
               coverImage: {
                 url: data.publicUrl,
-                width: 1000,
-                height: 1000,
+                width: 200,
+                height: 200,
               },
               createdAt: rawPost.createdAt,
               categories: rawPost.categories.map((category) => ({
