@@ -168,6 +168,7 @@ const Page: React.FC = () => {
     if (!rawApiPostResponse || !checkableCategories) return;
 
     // 投稿記事のタイトル、本文、カバーイメージURLを更新
+    setNewTitle(rawApiPostResponse.title); // タイトルを設定
     setNewStartday(rawApiPostResponse.startday); // 追加
     setNewFinishday(rawApiPostResponse.finishday); // 追加
     setNewItemcounter(Number(rawApiPostResponse.itemcounter)); // 追加
@@ -283,6 +284,7 @@ const Page: React.FC = () => {
       });
 
       if (!res.ok) {
+        const errorResponse = await res.json();
         throw new Error(`${res.status}: ${res.statusText}`);
       }
 
