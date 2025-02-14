@@ -3,7 +3,7 @@ import { NextResponse, NextRequest } from "next/server";
 import { Post } from "@prisma/client";
 import { supabase } from "@/utils/supabase";
 
-const prisma = new PrismaClient();
+// const prisma = new PrismaClient(); // この行を削除
 
 type RouteParams = {
   params: {
@@ -17,7 +17,7 @@ type RequestBody = {
   finishday: string;
   itemcounter: string;
   content: string;
-  coverImageKey: string; // 変更
+  coverImageKey: string;
   categoryIds: string[];
 };
 
@@ -26,7 +26,7 @@ export const PUT = async (req: NextRequest, routeParams: RouteParams) => {
     const id = routeParams.params.id;
     const requestBody: RequestBody = await req.json();
 
-    /* 認証チェック
+    // 認証チェック
     const token = req.headers.get("Authorization") ?? "";
     const { data, error } = await supabase.auth.getUser(token);
     if (error || !data.user) {
@@ -34,7 +34,7 @@ export const PUT = async (req: NextRequest, routeParams: RouteParams) => {
         { error: "認証に失敗しました" },
         { status: 401 }
       );
-    }*/
+    }
 
     // 分割代入
     const {
@@ -45,7 +45,7 @@ export const PUT = async (req: NextRequest, routeParams: RouteParams) => {
       content,
       coverImageKey,
       categoryIds,
-    } = requestBody; // 変更
+    } = requestBody;
 
     // categoryIds に該当するカテゴリが存在するか確認
     const categories = await prisma.category.findMany({
