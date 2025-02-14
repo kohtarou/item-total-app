@@ -17,15 +17,6 @@ type RequestBody = {
 export const POST = async (req: NextRequest) => {
   try {
     const requestBody: RequestBody = await req.json();
-    const {
-      title,
-      startday,
-      finishday,
-      itemcounter,
-      content,
-      coverImageKey,
-      categoryIds,
-    } = requestBody;
 
     /* 認証チェック
     const token = req.headers.get("Authorization") ?? "";
@@ -36,6 +27,16 @@ export const POST = async (req: NextRequest) => {
         { status: 401 }
       );
     }*/
+
+    const {
+      title,
+      startday,
+      finishday,
+      itemcounter,
+      content,
+      coverImageKey,
+      categoryIds,
+    } = requestBody;
 
     // 投稿記事テーブルにレコードを追加
     const post = await prisma.post.create({

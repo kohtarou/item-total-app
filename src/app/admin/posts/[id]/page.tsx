@@ -285,7 +285,9 @@ const Page: React.FC = () => {
 
       if (!res.ok) {
         const errorResponse = await res.json();
-        throw new Error(`${res.status}: ${res.statusText}`);
+        throw new Error(
+          `${res.status}: ${res.statusText} - ${errorResponse.error}`
+        );
       }
 
       const postResponse = await res.json();

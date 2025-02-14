@@ -3,6 +3,8 @@ import { NextResponse, NextRequest } from "next/server";
 import { Post } from "@prisma/client";
 import { supabase } from "@/utils/supabase";
 
+const prisma = new PrismaClient();
+
 type RouteParams = {
   params: {
     id: string;
@@ -23,6 +25,16 @@ export const PUT = async (req: NextRequest, routeParams: RouteParams) => {
   try {
     const id = routeParams.params.id;
     const requestBody: RequestBody = await req.json();
+
+    /* 認証チェック
+    const token = req.headers.get("Authorization") ?? "";
+    const { data, error } = await supabase.auth.getUser(token);
+    if (error || !data.user) {
+      return NextResponse.json(
+        { error: "認証に失敗しました" },
+        { status: 401 }
+      );
+    }*/
 
     // 分割代入
     const {
@@ -53,15 +65,15 @@ export const PUT = async (req: NextRequest, routeParams: RouteParams) => {
     });
 
     // 投稿記事テーブルにレコードを追加
-    const post: Post = await prisma.post.update({
+    const post = await prisma.post.update({
       where: { id },
       data: {
-        title, // title: title の省略形であることに注意。以下も同様
+        title,
         startday,
         finishday,
         itemcounter,
         content,
-        coverImageKey, // 変更
+        coverImageKey,
       },
     });
 
@@ -89,7 +101,7 @@ export const DELETE = async (req: NextRequest, routeParams: RouteParams) => {
   try {
     const id = routeParams.params.id;
 
-    const post: Post = await prisma.post.delete({
+    const post = await prisma.post.delete({
       where: { id },
     });
     return NextResponse.json({ msg: `「${post.title}」を削除しました。` });

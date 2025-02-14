@@ -202,7 +202,10 @@ const Page: React.FC = () => {
       });
 
       if (!res.ok) {
-        throw new Error(`${res.status}: ${res.statusText}`);
+        const errorResponse = await res.json();
+        throw new Error(
+          `${res.status}: ${res.statusText} - ${errorResponse.error}`
+        );
       }
 
       const postResponse = await res.json();
