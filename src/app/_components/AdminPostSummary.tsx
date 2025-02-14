@@ -27,14 +27,16 @@ const AdminPostSummary: React.FC<Props> = (props) => {
   const safeHTML = DOMPurify.sanitize(post.content);
 
   return (
-    <div className="flex rounded-md border border-slate-400 p-3 shadow-md">
-      <Image
-        src={post.coverImage.url}
-        alt={post.title}
-        width={post.coverImage.width}
-        height={post.coverImage.height}
-        className="mr-4"
-      />
+    <div className="flex border border-slate-400 p-3">
+      <div className="mr-4">
+        <Image
+          src={post.coverImage.url}
+          alt={post.title}
+          width={post.coverImage.width}
+          height={post.coverImage.height}
+          className="h-auto w-full"
+        />
+      </div>
       <div className="flex-1">
         <div className="flex items-center justify-between">
           <input
