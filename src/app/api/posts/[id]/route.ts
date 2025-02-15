@@ -1,6 +1,8 @@
 import prisma from "@/lib/prisma";
 import { NextResponse, NextRequest } from "next/server";
 
+export const revalidate = 0; // ◀ サーバサイドのキャッシュを無効化する設定
+
 type RouteParams = {
   params: {
     id: string;
