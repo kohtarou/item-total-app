@@ -171,10 +171,6 @@ const Page: React.FC = () => {
 
   // フォームの送信処理
   const handleSubmit = async () => {
-    if (!token) {
-      window.alert("予期せぬ動作：トークンが取得できません。");
-      return;
-    }
     setIsSubmitting(true);
 
     try {
@@ -196,7 +192,6 @@ const Page: React.FC = () => {
         cache: "no-store",
         headers: {
           "Content-Type": "application/json",
-          Authorization: token,
         },
         body: JSON.stringify(requestBody),
       });

@@ -24,16 +24,6 @@ export const PUT = async (req: NextRequest, routeParams: RouteParams) => {
     const id = routeParams.params.id;
     const requestBody: RequestBody = await req.json();
 
-    // 認証チェック
-    const token = req.headers.get("Authorization") ?? "";
-    const { data, error } = await supabase.auth.getUser(token);
-    if (error || !data.user) {
-      return NextResponse.json(
-        { error: "認証に失敗しました" },
-        { status: 401 }
-      );
-    }
-
     // 分割代入
     const {
       title,

@@ -96,11 +96,6 @@ const Page: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!token) {
-      window.alert("予期せぬ動作：トークンが取得できません。");
-      return;
-    }
-
     setIsSubmitting(true);
 
     try {
@@ -114,7 +109,6 @@ const Page: React.FC = () => {
         cache: "no-store",
         headers: {
           "Content-Type": "application/json",
-          Authorization: token, //追加
         },
         body: JSON.stringify(requestBody),
       });

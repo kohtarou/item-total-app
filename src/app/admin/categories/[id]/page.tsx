@@ -136,11 +136,6 @@ const Page: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!token) {
-      window.alert("予期せぬ動作：トークンが取得できません。");
-      return;
-    }
-
     setIsSubmitting(true);
 
     try {
@@ -154,7 +149,6 @@ const Page: React.FC = () => {
         cache: "no-store",
         headers: {
           "Content-Type": "application/json",
-          Authorization: token, // ◀ 追加
         },
         body: JSON.stringify(requestBody),
       });
@@ -177,15 +171,12 @@ const Page: React.FC = () => {
     }
   };
 
-  // 「削除」のボタンが押下されたときにコールされる関数
   const handleDelete = async () => {
-    // prettier-ignore
-    if (!window.confirm(`カテゴリ「${currentCategoryName}」を本当に削除しますか？`)) {
-      return;
-    }
-
-    if (!token) {
-      window.alert("予期せぬ動作：トークンが取得できません。");
+    if (
+      !window.confirm(
+        `カテゴリ「${currentCategoryName}」を本当に削除しますか？`
+      )
+    ) {
       return;
     }
 
@@ -195,15 +186,11 @@ const Page: React.FC = () => {
       const res = await fetch(requestUrl, {
         method: "DELETE",
         cache: "no-store",
-        headers: {
-          Authorization: token, // ◀ 追加
-        },
       });
 
       if (!res.ok) {
         throw new Error(`${res.status}: ${res.statusText}`);
       }
-      // カテゴリの一覧ページに移動
       router.replace("/admin/categories");
     } catch (error) {
       const errorMsg =
