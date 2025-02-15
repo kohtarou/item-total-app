@@ -5,11 +5,12 @@ import { supabase } from "@/utils/supabase";
 import prisma from "@/lib/prisma";
 
 export const revalidate = 0; // ◀ サーバサイドのキャッシュを無効化する設定
+
 type RequestBody = {
   title: string;
   startday: string;
   finishday: string;
-  itemcounter: string;
+  itemcounter: number; // 変更
   content: string;
   coverImageKey: string;
   categoryIds: string[];
@@ -35,7 +36,7 @@ export const POST = async (req: NextRequest) => {
         title,
         startday,
         finishday,
-        itemcounter,
+        itemcounter: Number(itemcounter), // 変更
         content,
         coverImageKey,
         categories: {

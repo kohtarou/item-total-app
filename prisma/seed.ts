@@ -16,13 +16,18 @@ const main = async () => {
   const c3 = await prisma.category.create({ data: { name: "配布" } });
   const c4 = await prisma.category.create({ data: { name: "常設" } });
 
+  console.log(JSON.stringify(c1, null, 2));
+  console.log(JSON.stringify(c2, null, 2));
+  console.log(JSON.stringify(c3, null, 2));
+  console.log(JSON.stringify(c4, null, 2));
+
   // 投稿記事データの作成 (レコードのInsert)
   const p1 = await prisma.post.create({
     data: {
       title: "2025ニューイヤーキャンペーン",
-      startday: "2025-01-01",
-      finishday: "2025-01-14",
-      itemcounter: "100",
+      startday: new Date("2025-01-01T00:00:00.000Z"),
+      finishday: new Date("2025-01-14T00:00:00.000Z"),
+      itemcounter: 100, // 変更
       content: "ログインボーナスでダイヤ100個プレゼント！",
       coverImageKey: "private/1-1-1-14.png",
       categories: {
@@ -34,9 +39,9 @@ const main = async () => {
   const p2 = await prisma.post.create({
     data: {
       title: "ザクザクトレジャー",
-      startday: "2025-01-01",
-      finishday: "2025-01-06",
-      itemcounter: "30",
+      startday: new Date("2025-01-01T00:00:00.000Z"),
+      finishday: new Date("2025-01-06T00:00:00.000Z"),
+      itemcounter: 30, // 変更
       content: "報酬が普段の2倍！30個獲得可能！",
       coverImageKey: "private/1-1-1-6.png",
       categories: {
@@ -48,9 +53,9 @@ const main = async () => {
   const p3 = await prisma.post.create({
     data: {
       title: "コビー登場記念！プロデューサープレゼント！",
-      startday: "2025-01-07",
-      finishday: "2025-01-07",
-      itemcounter: "100",
+      startday: new Date("2025-01-07T00:00:00.000Z"),
+      finishday: new Date("2025-01-07T00:00:00.000Z"),
+      itemcounter: 100, // 変更
       content: "コビー登場記念！たなPから虹のダイヤ100個プレゼント！",
       coverImageKey: "private/1-7.jpg",
       categories: {
@@ -62,9 +67,9 @@ const main = async () => {
   const p4 = await prisma.post.create({
     data: {
       title: "リーグバトルシーズン143",
-      startday: "2025-01-01",
-      finishday: "2025-01-16",
-      itemcounter: "25",
+      startday: new Date("2025-01-01T00:00:00.000Z"),
+      finishday: new Date("2025-01-16T00:00:00.000Z"),
+      itemcounter: 25, // 変更
       content: "ダイヤ獲得：バトルスコア報酬5個・シーズン切り替え報酬20個",
       coverImageKey: "private/cover-img-purple.jpg",
       categories: {

@@ -13,7 +13,7 @@ type RequestBody = {
   title: string;
   startday: string;
   finishday: string;
-  itemcounter: string;
+  itemcounter: number; // 変更
   content: string;
   coverImageKey: string;
   categoryIds: string[];

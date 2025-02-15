@@ -14,9 +14,9 @@ datasource db {
 model Post {
   id             String @id @default(uuid())
   title          String
-  startday       String
-  finishday      String
-  itemcounter    String
+  startday       DateTime
+  finishday      DateTime
+  itemcounter    Int
   content        String
   coverImageKey  String 
   createdAt      DateTime @default(now())
@@ -24,7 +24,6 @@ model Post {
   categories     PostCategory[]
 }
 
-// カテゴリテーブル
 model Category {
   id         String @id @default(uuid())
   name       String @unique
@@ -32,7 +31,6 @@ model Category {
   updatedAt  DateTime @updatedAt
   posts      PostCategory[]
 }
-
 
 model PostCategory {
   id          String @id @default(uuid())
