@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient, Prisma } from "@prisma/client";
+import { Post } from "@prisma/client";
 import { supabase } from "@/utils/supabase";
+import prisma from "@/lib/prisma";
 
-const prisma = new PrismaClient();
-
+export const revalidate = 0; // ◀ サーバサイドのキャッシュを無効化する設定
 type RequestBody = {
   title: string;
   startday: string;
@@ -29,7 +30,7 @@ export const POST = async (req: NextRequest) => {
     } = requestBody;
 
     // 投稿記事テーブルにレコードを追加
-    const post = await prisma.post.create({
+    const post: Post = await prisma.post.create({
       data: {
         title,
         startday,

@@ -11,7 +11,7 @@ export const POST = async (req: NextRequest) => {
   try {
     const { name }: RequestBody = await req.json();
 
-    const category = await prisma.category.create({
+    const category: Category = await prisma.category.create({
       data: {
         name,
       },

@@ -53,7 +53,7 @@ export const PUT = async (req: NextRequest, routeParams: RouteParams) => {
     });
 
     // 投稿記事テーブルにレコードを追加
-    const post = await prisma.post.update({
+    const post: Post = await prisma.post.update({
       where: { id },
       data: {
         title,
@@ -89,7 +89,7 @@ export const DELETE = async (req: NextRequest, routeParams: RouteParams) => {
   try {
     const id = routeParams.params.id;
 
-    const post = await prisma.post.delete({
+    const post: Post = await prisma.post.delete({
       where: { id },
     });
     return NextResponse.json({ msg: `「${post.title}」を削除しました。` });
