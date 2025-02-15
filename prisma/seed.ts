@@ -4,9 +4,9 @@ const prisma = new PrismaClient();
 
 const main = async () => {
   // 既存のレコードを全て削除
-  await prisma.postCategory?.deleteMany();
-  await prisma.post?.deleteMany();
-  await prisma.category?.deleteMany();
+  await prisma.postCategory.deleteMany();
+  await prisma.post.deleteMany();
+  await prisma.category.deleteMany();
 
   // カテゴリデータの作成 (レコードのInsert)
   const c1 = await prisma.category.create({ data: { name: "キャンペーン" } });
