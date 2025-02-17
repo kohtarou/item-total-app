@@ -434,10 +434,20 @@ const Page: React.FC = () => {
           <label htmlFor="itemcounter" className="block font-bold">
             アイテム数
           </label>
+          <input
+            type="number"
+            id="itemcounter"
+            name="itemcounter"
+            className="w-full rounded-md border-2 px-2 py-1"
+            value={newItemcounter}
+            onChange={(e) => setNewItemcounter(Number(e.target.value))}
+            placeholder="アイテム数を記入してください"
+            required
+          />
           <Popover>
             <PopoverTrigger asChild>
               <Button variant="outline" className="mt-2 w-full">
-                アイテム数を入力
+                アイテム数を選択
               </Button>
             </PopoverTrigger>
             <PopoverContent

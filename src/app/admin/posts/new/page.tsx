@@ -338,7 +338,7 @@ const Page: React.FC = () => {
             アイテム数
           </label>
           <input
-            type="text"
+            type="number"
             id="itemcounter"
             name="itemcounter"
             className="w-full rounded-md border-2 px-2 py-1"
@@ -350,7 +350,7 @@ const Page: React.FC = () => {
           <Popover>
             <PopoverTrigger asChild>
               <Button variant="outline" className="mt-2 w-full">
-                アイテム数を入力
+                アイテム数を選択
               </Button>
             </PopoverTrigger>
             <PopoverContent
