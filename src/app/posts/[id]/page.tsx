@@ -106,6 +106,15 @@ const Page: React.FC = () => {
             className="rounded-xl"
           />
         </div>
+        <div className="text-gray-500">
+          開始日: {new Date(post.startday).toLocaleDateString()} - 終了日:{" "}
+          {new Date(post.finishday).toLocaleDateString()}
+        </div>
+        <div className="text-gray-500">アイテム数: {post.itemcounter}</div>
+        <div className="text-gray-500">
+          カテゴリ:{" "}
+          {post.categories.map((category) => category.name).join(", ")}
+        </div>
         <div
           style={{ whiteSpace: "pre-line" }}
           dangerouslySetInnerHTML={{ __html: safeHTML }}
