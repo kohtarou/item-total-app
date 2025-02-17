@@ -93,32 +93,54 @@ const Page: React.FC = () => {
   });
 
   return (
-    <main>
-      <div className="space-y-2">
-        <div className="mb-2 text-2xl font-bold">{post.title}</div>
-        <div>
-          <Image
-            src={post.coverImage.url}
-            alt="Example Image"
-            width={post.coverImage.width}
-            height={post.coverImage.height}
-            priority
-            className="rounded-xl"
+    <main className="p-4">
+      <div className="space-y-4">
+        <div className="mb-4 text-3xl font-extrabold text-gray-900">
+          {post.title}
+        </div>
+        <div className="flex flex-col md:flex-row md:space-x-4">
+          <div className="relative h-64 w-full md:w-1/2">
+            <Image
+              src={post.coverImage.url}
+              alt="Example Image"
+              layout="fill"
+              objectFit="cover"
+              className="rounded-xl"
+            />
+          </div>
+          <div className="flex flex-col space-y-4 md:w-1/2">
+            <div className="rounded-lg bg-white p-4 shadow-md">
+              <div className="text-gray-500">開始日</div>
+              <div className="text-lg font-semibold text-gray-900">
+                {new Date(post.startday).toLocaleDateString()}
+              </div>
+            </div>
+            <div className="rounded-lg bg-white p-4 shadow-md">
+              <div className="text-gray-500">終了日</div>
+              <div className="text-lg font-semibold text-gray-900">
+                {new Date(post.finishday).toLocaleDateString()}
+              </div>
+            </div>
+            <div className="rounded-lg bg-white p-4 shadow-md">
+              <div className="text-gray-500">アイテム数</div>
+              <div className="text-lg font-semibold text-gray-900">
+                {post.itemcounter}
+              </div>
+            </div>
+            <div className="rounded-lg bg-white p-4 shadow-md">
+              <div className="text-gray-500">カテゴリ</div>
+              <div className="text-lg font-semibold text-gray-900">
+                {post.categories.map((category) => category.name).join(", ")}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="rounded-lg bg-white p-4 shadow-md">
+          <div
+            className="prose"
+            dangerouslySetInnerHTML={{ __html: safeHTML }}
           />
         </div>
-        <div className="text-gray-500">
-          開始日: {new Date(post.startday).toLocaleDateString()} - 終了日:{" "}
-          {new Date(post.finishday).toLocaleDateString()}
-        </div>
-        <div className="text-gray-500">アイテム数: {post.itemcounter}</div>
-        <div className="text-gray-500">
-          カテゴリ:{" "}
-          {post.categories.map((category) => category.name).join(", ")}
-        </div>
-        <div
-          style={{ whiteSpace: "pre-line" }}
-          dangerouslySetInnerHTML={{ __html: safeHTML }}
-        />
       </div>
     </main>
   );
