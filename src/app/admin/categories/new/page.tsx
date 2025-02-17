@@ -119,7 +119,7 @@ const Page: React.FC = () => {
 
       const categoryResponse = await res.json();
       setIsSubmitting(false);
-      router.push(`/admin/categories/${categoryResponse.id}`); // 修正
+      router.push(`/admin/categories`); // 修正
     } catch (error) {
       const errorMsg =
         error instanceof Error

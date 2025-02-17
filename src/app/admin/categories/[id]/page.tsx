@@ -120,7 +120,7 @@ const Page: React.FC = () => {
     if (name.length < 2 || name.length > 16) {
       return "2文字以上16文字以内で入力してください。";
     }
-    if (categories && categories.some((c) => c.name === name)) {
+    if (categories && categories.some((c) => c.name === name && c.id !== id)) {
       return "同じ名前のカテゴリが既に存在します。";
     }
     return "";
@@ -128,8 +128,9 @@ const Page: React.FC = () => {
 
   // カテゴリの名前を設定するテキストボックスの値が変更されたときにコールされる関数
   const updateNewCategoryName = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNewCategoryNameError(isValidCategoryName(e.target.value));
-    setNewCategoryName(e.target.value);
+    const newName = e.target.value;
+    setNewCategoryNameError(isValidCategoryName(newName));
+    setCategoryName(newName);
   };
 
   // 「カテゴリの名前を変更」のボタンが押下されたときにコールされる関数
@@ -263,7 +264,7 @@ const Page: React.FC = () => {
               name="name"
               className="w-full rounded-md border-2 px-2 py-1"
               value={categoryName}
-              onChange={(e) => setCategoryName(e.target.value)}
+              onChange={updateNewCategoryName}
               placeholder="カテゴリ名を記入してください"
               required
             />
@@ -287,11 +288,7 @@ const Page: React.FC = () => {
               "bg-indigo-500 text-white hover:bg-indigo-600",
               "disabled:cursor-not-allowed disabled:opacity-50"
             )}
-            disabled={
-              isSubmitting ||
-              newCategoryNameError !== "" ||
-              newCategoryName === ""
-            }
+            disabled={isSubmitting || newCategoryNameError !== ""}
           >
             カテゴリの名前を変更
           </button>
