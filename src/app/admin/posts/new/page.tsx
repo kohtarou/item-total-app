@@ -337,40 +337,42 @@ const Page: React.FC = () => {
           <label htmlFor="itemcounter" className="block font-bold">
             アイテム数
           </label>
-          <input
-            type="number"
-            id="itemcounter"
-            name="itemcounter"
-            className="w-full rounded-md border-2 px-2 py-1"
-            value={newItemcounter}
-            onChange={(e) => setNewItemcounter(Number(e.target.value))}
-            placeholder="アイテム数を記入してください"
-            required
-          />
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button variant="outline" className="mt-2 w-full">
-                アイテム数を選択
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent
-              className="h-48 w-32 overflow-y-auto p-0"
-              align="end"
-            >
-              <div className="grid grid-cols-1 gap-2 p-2">
-                {[...Array(100).keys()].map((num) => (
-                  <button
-                    key={num}
-                    type="button"
-                    className="rounded-md bg-gray-200 p-2 text-center hover:bg-gray-300"
-                    onClick={() => setNewItemcounter(num + 1)}
-                  >
-                    {num + 1}
-                  </button>
-                ))}
-              </div>
-            </PopoverContent>
-          </Popover>
+          <div className="flex space-x-2">
+            <input
+              type="number"
+              id="itemcounter"
+              name="itemcounter"
+              className="w-7/12 rounded-md border-2 px-2 py-1"
+              value={newItemcounter}
+              onChange={(e) => setNewItemcounter(Number(e.target.value))}
+              placeholder="アイテム数を記入してください"
+              required
+            />
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button variant="outline" className="w-5/12">
+                  アイテム数を選択
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent
+                className="h-48 w-32 overflow-y-auto p-0"
+                align="end"
+              >
+                <div className="grid grid-cols-1 gap-2 p-2">
+                  {[...Array(100).keys()].map((num) => (
+                    <button
+                      key={num}
+                      type="button"
+                      className="rounded-md bg-gray-200 p-2 text-center hover:bg-gray-300"
+                      onClick={() => setNewItemcounter(num + 1)}
+                    >
+                      {num + 1}
+                    </button>
+                  ))}
+                </div>
+              </PopoverContent>
+            </Popover>
+          </div>
         </div>
 
         <div className="space-y-1">
