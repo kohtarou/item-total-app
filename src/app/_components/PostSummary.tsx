@@ -25,37 +25,37 @@ const PostSummary: React.FC<Props> = (props) => {
           className="h-auto w-full"
         />
       </div>
-      <div className="flex-1">
-        <div className="flex items-center justify-between">
-          <div className="mb-1 flex-1 text-lg font-bold">{post.title}</div>
-          <div className="flex shrink-0 space-x-1.5">
-            {post.categories.map((category) => (
-              <div
-                key={category.id}
-                className={twMerge(
-                  "rounded-md px-2 py-0.5",
-                  "text-xs font-bold",
-                  "border border-slate-400 text-slate-500"
-                )}
-              >
-                {category.name}
-              </div>
-            ))}
+      <Link href={`/posts/${post.id}`} className="flex-1">
+        <div className="flex h-full flex-col">
+          <div className="flex items-center justify-between">
+            <div className="mb-1 flex-1 text-lg font-bold">{post.title}</div>
+            <div className="flex shrink-0 space-x-1.5">
+              {post.categories.map((category) => (
+                <div
+                  key={category.id}
+                  className={twMerge(
+                    "rounded-md px-2 py-0.5",
+                    "text-xs font-bold",
+                    "border border-slate-400 text-slate-500"
+                  )}
+                >
+                  {category.name}
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
-        <div className="mb-1">
-          <div>開始日: {dayjs(post.startday).format(dtFmt)}</div>
-          <div>終了日: {dayjs(post.finishday).format(dtFmt)}</div>
-        </div>
-        <Link href={`/posts/${post.id}`}>
+          <div className="mb-1">
+            <div>開始日: {dayjs(post.startday).format(dtFmt)}</div>
+            <div>終了日: {dayjs(post.finishday).format(dtFmt)}</div>
+          </div>
           <div className="mb-1">アイテム数: {post.itemcounter}</div>
           <div
             className="line-clamp-3"
             style={{ whiteSpace: "pre-line" }}
             dangerouslySetInnerHTML={{ __html: safeHTML }}
           />
-        </Link>
-      </div>
+        </div>
+      </Link>
     </div>
   );
 };
