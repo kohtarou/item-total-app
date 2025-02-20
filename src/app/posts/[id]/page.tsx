@@ -48,8 +48,8 @@ const Page: React.FC = () => {
           content: postApiResponse.content,
           coverImage: {
             url: data.publicUrl,
-            width: 1000,
-            height: 1000,
+            width: 500, // 画像の幅を調整
+            height: 500, // 画像の高さを調整
           },
           createdAt: postApiResponse.createdAt,
           categories: postApiResponse.categories.map((category) => ({
@@ -99,43 +99,32 @@ const Page: React.FC = () => {
           {post.title}
         </div>
         <div className="flex flex-col md:flex-row md:space-x-4">
-          <div className="relative h-64 w-full md:w-1/2">
+          <div className="relative size-full">
             <Image
               src={post.coverImage.url}
               alt="Example Image"
-              layout="fill"
-              objectFit="cover"
+              width={post.coverImage.width}
+              height={post.coverImage.height}
               className="rounded-xl"
             />
           </div>
-          <div className="flex flex-col space-y-4 md:w-1/2">
-            <div className="rounded-lg bg-white p-4 shadow-md">
-              <div className="text-gray-500">開始日</div>
-              <div className="text-lg font-semibold text-gray-900">
-                {new Date(post.startday).toLocaleDateString()}
-              </div>
+          <div className="flex flex-col space-y-2 md:w-2/3">
+            <div className="text-lg font-semibold text-gray-900">
+              カテゴリ:{" "}
+              {post.categories.map((category) => category.name).join(", ")}
             </div>
-            <div className="rounded-lg bg-white p-4 shadow-md">
-              <div className="text-gray-500">終了日</div>
-              <div className="text-lg font-semibold text-gray-900">
-                {new Date(post.finishday).toLocaleDateString()}
-              </div>
+            <div className="text-lg font-semibold text-gray-900">
+              開始日: {new Date(post.startday).toLocaleDateString()}
             </div>
-            <div className="rounded-lg bg-white p-4 shadow-md">
-              <div className="text-gray-500">アイテム数</div>
-              <div className="text-lg font-semibold text-gray-900">
-                {post.itemcounter}
-              </div>
+            <div className="text-lg font-semibold text-gray-900">
+              終了日: {new Date(post.finishday).toLocaleDateString()}
             </div>
-            <div className="rounded-lg bg-white p-4 shadow-md">
-              <div className="text-gray-500">カテゴリ</div>
-              <div className="text-lg font-semibold text-gray-900">
-                {post.categories.map((category) => category.name).join(", ")}
-              </div>
+            <div className="text-lg font-semibold text-gray-900">
+              アイテム数: {post.itemcounter}
             </div>
           </div>
         </div>
-        <div className="rounded-lg bg-white p-4 shadow-md">
+        <div className="mt-4 rounded-lg bg-white p-4 shadow-md">
           <div
             className="prose"
             dangerouslySetInnerHTML={{ __html: safeHTML }}

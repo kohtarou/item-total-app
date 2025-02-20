@@ -1,7 +1,7 @@
 "use client";
 import { twMerge } from "tailwind-merge";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFish } from "@fortawesome/free-solid-svg-icons";
+import { faGem } from "@fortawesome/free-regular-svg-icons"; // faGemをインポート
 import Link from "next/link";
 import { supabase } from "@/utils/supabase"; // ◀ 追加
 import { useAuth } from "@/app/_hooks/useAuth"; // ◀ 追加
@@ -29,8 +29,9 @@ const Header: React.FC = () => {
         >
           <div>
             <Link href="/">
-              <FontAwesomeIcon icon={faFish} className="mr-1" />
-              MyBlogApp
+              <FontAwesomeIcon icon={faGem} className="mr-1" />{" "}
+              {/* faGemに変更 */}
+              アイテム管理アプリ
             </Link>
           </div>
           <div className="flex gap-x-6">

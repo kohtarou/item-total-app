@@ -27,11 +27,8 @@ const PostSummary: React.FC<Props> = (props) => {
       </div>
       <div className="flex-1">
         <div className="flex items-center justify-between">
-          <div>
-            <div>開始日: {dayjs(post.startday).format(dtFmt)}</div>
-            <div>終了日: {dayjs(post.finishday).format(dtFmt)}</div>
-          </div>
-          <div className="flex space-x-1.5">
+          <div className="mb-1 flex-1 text-lg font-bold">{post.title}</div>
+          <div className="flex shrink-0 space-x-1.5">
             {post.categories.map((category) => (
               <div
                 key={category.id}
@@ -46,8 +43,11 @@ const PostSummary: React.FC<Props> = (props) => {
             ))}
           </div>
         </div>
+        <div className="mb-1">
+          <div>開始日: {dayjs(post.startday).format(dtFmt)}</div>
+          <div>終了日: {dayjs(post.finishday).format(dtFmt)}</div>
+        </div>
         <Link href={`/posts/${post.id}`}>
-          <div className="mb-1 text-lg font-bold">{post.title}</div>
           <div className="mb-1">アイテム数: {post.itemcounter}</div>
           <div
             className="line-clamp-3"
