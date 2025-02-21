@@ -15,8 +15,7 @@ const Page: React.FC = () => {
               className="mr-2 text-blue-500"
             />
             <div>
-              <div className="text-blue-500 underline">/admin/posts</div>
-              <div className="text-gray-700">投稿一覧</div>
+              <div className="text-blue-500 underline">投稿一覧</div>
             </div>
           </div>
         </Link>
@@ -27,8 +26,7 @@ const Page: React.FC = () => {
               className="mr-2 text-blue-500"
             />
             <div>
-              <div className="text-blue-500 underline">/admin/posts/new</div>
-              <div className="text-gray-700">投稿新規作成</div>
+              <div className="text-blue-500 underline">投稿新規作成</div>
             </div>
           </div>
         </Link>
@@ -39,8 +37,7 @@ const Page: React.FC = () => {
               className="mr-2 text-blue-500"
             />
             <div>
-              <div className="text-blue-500 underline">/admin/categories</div>
-              <div className="text-gray-700">カテゴリ一覧</div>
+              <div className="text-blue-500 underline">カテゴリ一覧</div>
             </div>
           </div>
         </Link>
@@ -51,10 +48,7 @@ const Page: React.FC = () => {
               className="mr-2 text-blue-500"
             />
             <div>
-              <div className="text-blue-500 underline">
-                /admin/categories/new
-              </div>
-              <div className="text-gray-700">カテゴリ新規作成</div>
+              <div className="text-blue-500 underline">カテゴリ新規作成</div>
             </div>
           </div>
         </Link>
