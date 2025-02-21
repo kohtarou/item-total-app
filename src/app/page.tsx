@@ -80,7 +80,7 @@ const Page: React.FC = () => {
 
   return (
     <main>
-      <div className="text-2xl font-bold">投稿記事一覧</div>
+      <div className="text-2xl font-bold">イベント一覧</div>
       <div className="mb-1 flex justify-end">
         <Link href="/admin" className="text-blue-500 underline">
           管理者機能
