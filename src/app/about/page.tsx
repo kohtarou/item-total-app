@@ -26,7 +26,7 @@ const Page: React.FC = () => {
       <div className="space-y-3">
         <div className="md:flex md:justify-center">
           <div className="font-bold md:w-1/6 md:text-center">アプリ名</div>
-          <div className="md:w-5/6">ダイヤ数まとめアプリ</div>
+          <div className="md:w-5/6">ダイヤまとめアプリ</div>
         </div>
         <div className="md:flex md:justify-center">
           <div className="font-bold md:w-1/6 md:text-center">
