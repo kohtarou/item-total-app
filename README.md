@@ -53,5 +53,21 @@
 ![TypeScript](https://img.shields.io/badge/-TypeScript-3178C6.svg?logo=typescript&style=flat&logoColor=white)
 ![Supabase](https://img.shields.io/badge/-Supabase-3ECF8E.svg?logo=supabase&style=flat&logoColor=white)
 ![Vercel](https://img.shields.io/badge/-Vercel-000000.svg?logo=vercel&style=flat&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/-Tailwind%20CSS-38B2AC.svg?logo=tailwind-css&style=flat&logoColor=white)
+![React](https://img.shields.io/badge/-React-61DAFB.svg?logo=react&style=flat&logoColor=white)
+![Prisma](https://img.shields.io/badge/-Prisma-2D3748.svg?logo=prisma&style=flat&logoColor=white)
+![VSCode](https://img.shields.io/badge/-VSCode-007ACC.svg?logo=visual-studio-code&style=flat&logoColor=white)
 
-# おわりに
+## 開発期間・体制
+
+- 開発体制：個人開発
+- 開発期間：2024.12 ~ 2025.2 (約100時間)
+
+## 今後
+
+- 最初の投稿記事一覧でカテゴリごとにソート、フィルタ処理を行う機能を作りたい
+- イベントを分かりやすくカレンダー風にまとめて表示したい
+
+## おわりに
+
+このアプリはゲーム内のアイテムをまとめるために作成しました。今後も使う予定があるのでアップデートをしていきます。
