@@ -10,6 +10,9 @@
 
 ## 概要
 
+アプリを開いたらまず投稿したイベントの一覧が表示されます。ここで投稿済みのイベントを確認できます。投稿の情報や画像を確認できます。
+<img width="960" alt="Image" src="https://github.com/user-attachments/assets/d05512b1-c60b-4502-b7ee-6854603c6c48" />
+
 # 環境
 
 # おわりに
