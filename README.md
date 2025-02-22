@@ -47,7 +47,7 @@
 カテゴリの編集画面ではカテゴリの名前変更が出来ます。削除ボタンを押すことで削除することもできます。
 <img width="960" alt="Image" src="https://github.com/user-attachments/assets/caea5a3f-d2e9-420b-bfd8-8eead56fd03b" />
 
-# 環境
+## 環境
 
 ![Next.js](https://img.shields.io/badge/-Next.js-000000.svg?logo=next.js&style=flat&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/-TypeScript-3178C6.svg?logo=typescript&style=flat&logoColor=white)
@@ -57,6 +57,49 @@
 ![React](https://img.shields.io/badge/-React-61DAFB.svg?logo=react&style=flat&logoColor=white)
 ![Prisma](https://img.shields.io/badge/-Prisma-2D3748.svg?logo=prisma&style=flat&logoColor=white)
 ![VSCode](https://img.shields.io/badge/-VSCode-007ACC.svg?logo=visual-studio-code&style=flat&logoColor=white)
+
+# システム構成図
+
+<pre>
+.
+├─README.md
+├─package-lock.json
+├─package.json
+├─tailwind.config.ts
+├─tsconfig.json
+├─prisma
+├─public
+│ └─images
+└─src
+├─app
+│ ├─about
+│ ├─admin
+│ │ ├─categories
+│ │ │ ├─new
+│ │ │ └─[id]
+│ │ └─posts
+│ │ ├─new
+│ │ └─[id]
+│ ├─api
+│ │ ├─admin
+│ │ │ ├─categories
+│ │ │ │ └─[id]
+│ │ │ └─posts
+│ │ │ └─[id]
+│ │ ├─categories
+│ │ └─posts
+│ │ └─[id]
+│ ├─login
+│ ├─posts
+│ │ └─[id]
+│ ├─_components
+│ ├─_hooks
+│ └─_types
+├─components
+│ └─ui
+├─lib
+└─utils
+</pre>
 
 ## 開発期間・体制
 
