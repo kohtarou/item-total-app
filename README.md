@@ -71,34 +71,34 @@
 ├─public
 │ └─images
 └─src
-├─app
-│ ├─about
-│ ├─admin
-│ │ ├─categories
-│ │ │ ├─new
-│ │ │ └─[id]
-│ │ └─posts
-│ │ ├─new
-│ │ └─[id]
-│ ├─api
-│ │ ├─admin
-│ │ │ ├─categories
-│ │ │ │ └─[id]
-│ │ │ └─posts
-│ │ │ └─[id]
-│ │ ├─categories
-│ │ └─posts
-│ │ └─[id]
-│ ├─login
-│ ├─posts
-│ │ └─[id]
-│ ├─_components
-│ ├─_hooks
-│ └─_types
-├─components
-│ └─ui
-├─lib
-└─utils
+    ├─app
+    │  ├─about
+    │  ├─admin
+    │  │  ├─categories
+    │  │  │  ├─new
+    │  │  │  └─[id]
+    │  │  └─posts
+    │  │      ├─new
+    │  │      └─[id]
+    │  ├─api
+    │  │  ├─admin
+    │  │  │  ├─categories
+    │  │  │  │  └─[id]
+    │  │  │  └─posts
+    │  │  │      └─[id]
+    │  │  ├─categories
+    │  │  └─posts
+    │  │      └─[id]
+    │  ├─login
+    │  ├─posts
+    │  │  └─[id]
+    │  ├─_components
+    │  ├─_hooks
+    │  └─_types
+    ├─components
+    │  └─ui
+    ├─lib
+    └─utils
 </pre>
 
 ## 開発期間・体制
