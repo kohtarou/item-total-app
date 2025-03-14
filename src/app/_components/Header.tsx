@@ -35,14 +35,13 @@ const Header: React.FC = () => {
             </Link>
           </div>
           <div className="flex gap-x-6">
-            {/* ▼ 追加 */}
+            <Link href="/table">table</Link> {/* 追加 */}
             {!isLoading &&
               (session ? (
                 <button onClick={logout}>Logout</button>
               ) : (
                 <Link href="/login">Login</Link>
               ))}
-            {/* ▲ 追加 */}
             <Link href="/about">About</Link>
           </div>
         </div>

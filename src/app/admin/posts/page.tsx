@@ -13,6 +13,7 @@ import {
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import { supabase } from "@/utils/supabase"; // 追加
+import dayjs from "dayjs"; // 追加
 
 const Page: React.FC = () => {
   const [posts, setPosts] = useState<Post[] | null>(null);
@@ -21,6 +22,9 @@ const Page: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [postToDelete, setPostToDelete] = useState<Post | null>(null);
   const [selectedPosts, setSelectedPosts] = useState<Set<string>>(new Set());
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null); // 追加
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc"); // 追加
+  const [filterMonth, setFilterMonth] = useState<string | null>(null); // 追加
 
   const fetchPosts = useCallback(async () => {
     try {
@@ -145,6 +149,29 @@ const Page: React.FC = () => {
     );
   }
 
+  const filteredPosts = posts
+    .filter((post) => {
+      if (selectedCategory) {
+        return post.categories.some(
+          (category) => category.name === selectedCategory
+        );
+      }
+      return true;
+    })
+    .filter((post) => {
+      if (filterMonth) {
+        return dayjs(post.startday).format("YYYY-MM") === filterMonth;
+      }
+      return true;
+    })
+    .sort((a, b) => {
+      if (sortOrder === "asc") {
+        return new Date(a.startday).getTime() - new Date(b.startday).getTime();
+      } else {
+        return new Date(b.startday).getTime() - new Date(a.startday).getTime();
+      }
+    });
+
   return (
     <main>
       <div className="text-2xl font-bold">投稿記事の管理</div>
@@ -178,8 +205,50 @@ const Page: React.FC = () => {
         </button>
       </div>
 
+      <div className="mb-4">
+        <label className="mr-2">カテゴリフィルター:</label>
+        <select
+          value={selectedCategory || ""}
+          onChange={(e) => setSelectedCategory(e.target.value || null)}
+          className="border p-1"
+        >
+          <option value="">全て</option>
+          {Array.from(
+            new Set(
+              posts.flatMap((post) =>
+                post.categories.map((category) => category.name)
+              )
+            )
+          ).map((category) => (
+            <option key={category} value={category}>
+              {category}
+            </option>
+          ))}
+        </select>
+      </div>
+      <div className="mb-4">
+        <label className="mr-2">ソート順:</label>
+        <select
+          value={sortOrder}
+          onChange={(e) => setSortOrder(e.target.value as "asc" | "desc")}
+          className="border p-1"
+        >
+          <option value="asc">開始日が早い順</option>
+          <option value="desc">開始日が遅い順</option>
+        </select>
+      </div>
+      <div className="mb-4">
+        <label className="mr-2">月フィルター:</label>
+        <input
+          type="month"
+          value={filterMonth || ""}
+          onChange={(e) => setFilterMonth(e.target.value || null)}
+          className="border p-1"
+        />
+      </div>
+
       <div className="space-y-3">
-        {posts.map((post) => (
+        {filteredPosts.map((post) => (
           <AdminPostSummary
             key={post.id}
             post={post}
